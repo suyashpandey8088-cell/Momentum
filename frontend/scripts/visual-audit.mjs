@@ -1,0 +1,24 @@
+import { chromium as playwright } from '@playwright/test';
+import chromium from '@sparticuz/chromium';
+import fs from 'node:fs/promises';
+const base=process.env.BASE_URL||'http://localhost:3000';
+await fs.mkdir('artifacts',{recursive:true});
+const browser=await playwright.launch({executablePath:await chromium.executablePath(),args:chromium.args,headless:true});
+const page=await browser.newPage({viewport:{width:1440,height:1000},deviceScaleFactor:1,colorScheme:'dark'});
+const errors=[];page.on('pageerror',e=>errors.push(e.message));
+await page.goto(base,{waitUntil:'networkidle'});await page.waitForTimeout(1800);
+await page.screenshot({path:'artifacts/home-desktop.png'});
+await page.goto(base+'/demo',{waitUntil:'networkidle'});await page.waitForURL('**/app');await page.waitForTimeout(1300);
+await page.screenshot({path:'artifacts/dashboard-desktop.png'});
+for(const route of ['tasks','meetings','memory','integrations','reports','settings']){await page.goto(base+'/app/'+route,{waitUntil:'networkidle'});await page.waitForTimeout(350);await page.screenshot({path:`artifacts/${route}-desktop.png`});}
+await page.goto(base+'/app/tasks',{waitUntil:'networkidle'});await page.getByRole('button',{name:'New task',exact:true}).click();await page.getByLabel('Task title').fill('Audit verification task');await page.getByRole('button',{name:'Create task',exact:true}).click();await page.waitForTimeout(600);
+const created=await page.getByRole('button',{name:'Audit verification task',exact:true}).count();
+await page.goto(base+'/app/meetings',{waitUntil:'networkidle'});await page.getByRole('button',{name:'New meeting',exact:true}).click();await page.getByRole('button',{name:'Try an example transcript'}).click();await page.getByLabel(/Everyone has agreed/).check();await page.getByRole('button',{name:'Process conversation'}).click();await page.waitForURL('**/app/meetings/*');await page.waitForTimeout(2500);await page.screenshot({path:'artifacts/meeting-intelligence.png'});
+const processed=await page.getByText('The conversation, distilled.').count();
+await page.setViewportSize({width:390,height:844});await page.goto(base,{waitUntil:'networkidle'});await page.waitForTimeout(900);await page.screenshot({path:'artifacts/home-mobile.png',fullPage:true});
+const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1);
+await page.goto(base+'/app',{waitUntil:'networkidle'});await page.waitForTimeout(500);await page.screenshot({path:'artifacts/dashboard-mobile.png',fullPage:true});
+const mobileOverflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1);
+console.log(JSON.stringify({errors,created,processed,overflow,mobileOverflow},null,2));
+await browser.close();
+if(errors.length||!created||!processed||overflow||mobileOverflow)process.exitCode=1;

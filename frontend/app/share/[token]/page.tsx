@@ -1,0 +1,10 @@
+'use client';
+import { use, useState } from 'react';
+import Link from 'next/link';
+import { ShieldCheck, Link2, ArrowUpRight, LockKeyhole } from 'lucide-react';
+import { useApi } from '@/hooks/use-api';
+import { Logo, Button, ThemeToggle, ErrorState, Skeleton } from '@/components/ui';
+import { ExecutionCard } from '@/features/share-card';
+import { useToast } from '@/components/providers';
+import type { CardData } from '@/types';
+export default function PublicCard({params}:{params:Promise<{token:string}>}){const {token}=use(params);const {data,loading,error,refresh}=useApi<CardData>(`/public/cards/${encodeURIComponent(token)}`);const [theme,setTheme]=useState('dark');const toast=useToast();const copy=async()=>{try{await navigator.clipboard.writeText(window.location.href);toast('Summary link copied.');}catch{toast('Select the address in your browser to copy this link.','info');}};return <div className="public-share-page"><header className="public-share-nav"><Link href="/"aria-label="MOMENTUM home"><Logo/></Link><ThemeToggle/></header><main className="public-share-main"><div className="public-share-heading"><span className="page-eyebrow">EXPLICITLY SHARED. CLEARLY CONNECTED.</span><h1>Progress worth passing on.</h1><p>A snapshot of the decisions and the work that followed.</p></div>{loading?<Skeleton rows={5}/>:error?<ErrorState message={error}retry={refresh}/>:data&&<><ExecutionCard card={data}theme={theme}/><div className="share-theme-picker"style={{justifyContent:'center',marginTop:20}}><div className="segmented">{['dark','light','blue'].map(t=><button key={t}className={theme===t?'active':''}onClick={()=>setTheme(t)}>{t[0].toUpperCase()+t.slice(1)}</button>)}</div></div><div className="public-share-actions"><Button variant="secondary"small onClick={copy}icon={<Link2 size={14}/>}>Copy summary link</Button><Button href="/signup"small>Build your momentum<ArrowUpRight size={14}/></Button></div><p className="public-share-privacy"><LockKeyhole size={12}/>Shared with permission. The original conversation stays private.</p></>}</main><footer className="public-share-footer">MOMENTUM — From conversation to completion.</footer></div>;}

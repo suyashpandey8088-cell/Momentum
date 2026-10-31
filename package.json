@@ -1,0 +1,12 @@
+{
+  "name": "momentum-monorepo",
+  "private": true,
+  "scripts": {
+    "dev": "bash scripts/dev.sh",
+    "build": "npm --prefix frontend run build",
+    "typecheck": "npm --prefix frontend run typecheck",
+    "test": ".venv/bin/pytest tests -q",
+    "test:ui": "node frontend/scripts/visual-audit.mjs",
+    "db:migrate": ".venv/bin/python database/migrate.py"
+  }
+}
