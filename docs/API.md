@@ -1,0 +1,68 @@
+# API overview
+
+Interactive reference: `/api/docs` (development). Machine-readable schema: `/api/openapi.json`.
+
+All browser mutations require the `X-Momentum-Client: web` header and an authenticated session unless explicitly public. Workspace data is organization-scoped.
+
+- `GET /api/actions` — List Actions
+- `POST /api/actions` — Propose Action
+- `POST /api/actions/{action_id}/execute` — Execute Action
+- `POST /api/actions/{action_id}/retry` — Retry Action
+- `PATCH /api/actions/{action_id}/review` — Review Action
+- `GET /api/audit` — Audit Log
+- `POST /api/auth/demo` — Demo
+- `POST /api/auth/forgot-password` — Forgot Password
+- `GET /api/auth/google` — Google Login
+- `GET /api/auth/google/callback` — Google Callback
+- `POST /api/auth/login` — Login
+- `POST /api/auth/logout` — Logout
+- `GET /api/auth/me` — Me
+- `POST /api/auth/onboarding` — Onboard
+- `GET /api/auth/outbox` — Development Outbox
+- `PATCH /api/auth/preferences` — Preferences
+- `POST /api/auth/resend-verification` — Resend Verification
+- `POST /api/auth/reset-password` — Reset Password
+- `POST /api/auth/signup` — Signup
+- `POST /api/auth/verify-email` — Verify Email
+- `GET /api/config` — Config
+- `GET /api/export` — Export Workspace
+- `GET /api/health` — Health
+- `GET /api/health/ready` — Readiness
+- `GET /api/integrations` — List Integrations
+- `DELETE /api/integrations/{provider}` — Disconnect
+- `GET /api/integrations/{provider}/callback` — Callback
+- `PATCH /api/integrations/{provider}/config` — Configure
+- `GET /api/integrations/{provider}/connect` — Connect
+- `GET /api/meetings` — List Meetings
+- `POST /api/meetings` — Create Meeting
+- `POST /api/meetings/upload` — Upload Meeting
+- `GET /api/meetings/{meeting_id}` — Get Meeting
+- `PATCH /api/meetings/{meeting_id}` — Edit Meeting
+- `DELETE /api/meetings/{meeting_id}` — Delete Meeting
+- `GET /api/meetings/{meeting_id}/card` — Private Card
+- `POST /api/meetings/{meeting_id}/decisions` — Create Decision
+- `PATCH /api/meetings/{meeting_id}/decisions/{decision_id}` — Edit Decision
+- `GET /api/meetings/{meeting_id}/recording` — Get Recording
+- `POST /api/meetings/{meeting_id}/reprocess` — Reprocess
+- `POST /api/meetings/{meeting_id}/share` — Set Share
+- `GET /api/memory/graph` — Memory Graph
+- `POST /api/memory/query` — Query Memory
+- `GET /api/notifications` — Notifications
+- `POST /api/notifications/read` — Read Notifications
+- `GET /api/overview` — Overview
+- `GET /api/participants` — List Participants
+- `POST /api/participants` — Create Participant
+- `GET /api/projects` — List Projects
+- `POST /api/projects` — Create Project
+- `PATCH /api/projects/{project_id}` — Edit Project
+- `GET /api/public/cards/{token}` — Public Card
+- `GET /api/reports` — Reports
+- `GET /api/settings` — Workspace Settings
+- `PATCH /api/settings/retention` — Set Retention
+- `DELETE /api/settings/workspace` — Delete Workspace
+- `GET /api/tasks` — List Tasks
+- `POST /api/tasks` — Create Task
+- `GET /api/tasks/{task_id}` — Get Task
+- `PATCH /api/tasks/{task_id}` — Edit Task
+- `DELETE /api/tasks/{task_id}` — Delete Task
+- `POST /api/tasks/{task_id}/comments` — Add Comment

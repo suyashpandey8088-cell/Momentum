@@ -1,0 +1,2 @@
+import { Logo, Button } from '@/components/ui';
+export default function NotFound(){return <main className="not-found-page"><Logo/><span className="error-code">404 / AN OPEN LOOP</span><h1>This thread leads somewhere else.</h1><p>The page may have moved, or this conversation is private. Let’s get you back to something that moves work forward.</p><div><Button href="/">Back to the story</Button><Button href="/demo"variant="secondary">Explore the platform</Button></div></main>;}
